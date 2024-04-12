@@ -20,4 +20,4 @@ const supr = (id) => {
 
 
 
-export default { getAll, create, update };
+export default { getAll, create, update,supr };

@@ -53,6 +53,14 @@ const App = () => {
     }
   }
 
+  const delName = (id) => {
+ 
+      personsService.supr(id);
+      setPersons(persons.filter((person) => person.id !== id));
+    }
+ 
+
+
 
 
 
@@ -78,6 +86,7 @@ const App = () => {
       <Persons
         persons={persons}
         searchValue={searchValue}
+        delName={delName}
       />
 
     </div>
