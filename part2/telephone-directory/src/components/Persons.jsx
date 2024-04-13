@@ -14,7 +14,7 @@ const Persons = ({persons, searchValue, delName}) => {
                             <li key={person.name}>
                                 {person.name} {person.number} 
                                 <button
-                                    onClick={()=>delName(person.id)}
+                                    onClick={()=>delName(person.id, person.name)}
                                 >
                                     delete
                                 </button>

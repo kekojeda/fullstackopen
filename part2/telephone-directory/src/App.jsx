@@ -10,7 +10,6 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [searchValue, setSeatchValue] = useState('')
 
-  
 
   useEffect(() => {
     personsService
@@ -40,30 +39,52 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    if (persons.some((el) => el.name === newName || el.number === newNumber)) {
-      alert(`${newName} ${newNumber} is already added to phonebook`)
-      setNewName('')
-      setNewNumber('')
+    if (persons.some((el) => el.name === newName)) {
+      if (confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const findPerson = persons.find(person => person.name === newName)
+        const changedNumber = { ...findPerson, number: newNumber }
+        console.log('find person', findPerson);
+        console.log('changedNumber person', changedNumber);
+        console.log('find person id', findPerson.id);
+
+        personsService
+          .update(findPerson.id, changedNumber)
+          .then((res) => console.log(res.data))
+          .then(() => {
+            setPersons(persons.map(person => person.id !== findPerson.id ? person : changedNumber))
+          })
+        setNewName('')
+        setNewNumber('')
+      }
     } else {
       personsService
         .create(personObject)
-      setPersons(persons.concat(personObject))
+        .then(response => {
+          console.log(response.data);
+          setPersons(persons.concat(response.data))
+        })
       setNewName('')
       setNewNumber('')
+    
     }
   }
 
-  const delName = (id) => {
- 
-      personsService.supr(id);
-      setPersons(persons.filter((person) => person.id !== id));
+  const delName = (id, name) => {
+    if (confirm(`Delete ${name}?`)) {
+      personsService
+        .supr(id)
+        .then(() => {
+          console.log('succes!')
+          console.log(`${id} succes`);
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(`${id} fail`);
+
+        })
+      setPersons(persons.filter((person) => person.id !== id))
     }
- 
-
-
-
-
-
+  }
 
   return (
     <div>
