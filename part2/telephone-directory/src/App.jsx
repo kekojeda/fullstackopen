@@ -3,13 +3,16 @@ import { Filter } from "./components/Filter"
 import { PersonForm } from './components/PersonForm'
 import { Persons } from './components/Persons'
 import personsService from './services/persons'
+import { MessageSucces } from './components/MessageSucces'
+import { MessageError } from './components/MessageError'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchValue, setSeatchValue] = useState('')
-
+  const [succedMsg, setSuccedMsg] = useState(null)
+  const [errorMsg, setErrorMsg] = useState(null)
 
   useEffect(() => {
     personsService
@@ -53,6 +56,19 @@ const App = () => {
           .then(() => {
             setPersons(persons.map(person => person.id !== findPerson.id ? person : changedNumber))
           })
+          .then(()=> setSuccedMsg(`The phone number for ${findPerson.name} has been updated successfully.`))
+          .then(()=> {
+            setTimeout(() => {
+              setSuccedMsg(null)
+            }, 5000)
+          })
+          .catch(err => {
+            console.log(err);
+            setErrorMsg(`Information of ${newName} has already been removed from server`)
+            setTimeout(() => {
+              setErrorMsg(null)
+            }, 5000)
+          })
         setNewName('')
         setNewNumber('')
       }
@@ -62,6 +78,12 @@ const App = () => {
         .then(response => {
           console.log(response.data);
           setPersons(persons.concat(response.data))
+        })
+        .then(() => setSuccedMsg(`The name ${personObject.name} has been added successfully.`))
+        .then(() => {
+          setTimeout(() => {
+            setSuccedMsg(null)
+          }, 5000)
         })
       setNewName('')
       setNewNumber('')
@@ -89,6 +111,9 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <MessageSucces message={succedMsg}/>
+      <MessageError message={errorMsg} />
 
       <Filter handleSearchValue={handleSearchValue} />
 
