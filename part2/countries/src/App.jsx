@@ -1,7 +1,6 @@
 import { useEffect } from "react"
 import { useState } from "react"
 import countriesServices from "./services/countries"
-import weatherServices from "./services/weather"
 import { Filter } from "./components/Filter"
 import { List } from "./components/List"
 
@@ -11,10 +10,12 @@ function App() {
   const [countries, setCountries] = useState([])
   const [searchValue, setSearchValue] = useState('')
   const [findCountries, setFindCountries] = useState([])
+  const [weather, setWeather] = useState([])
 
-  const api_key = import.meta.env.VITE_SOME_KEY
 
-  console.log(api_key);
+
+  
+
   const handleSearchValue = (event) => {
     console.log(searchValue);
     setSearchValue(event.target.value)
@@ -34,14 +35,15 @@ function App() {
     
   }
   
-
-
-
-
   return (
     <>
       <Filter handleSearchValue={handleSearchValue} />
-      <List findCountries={findCountries} setFindCountries={setFindCountries}/>
+      <List 
+          findCountries={findCountries}
+          setFindCountries={setFindCountries}
+          weather={weather}
+          setWeather={setWeather}
+           />
 
     </>
   )
