@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import weatherServices from "../services/weather";
 
 const List = ({ findCountries, setFindCountries, weather, setWeather }) => {
