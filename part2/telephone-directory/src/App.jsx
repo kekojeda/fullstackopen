@@ -64,6 +64,7 @@ const App = () => {
           })
           .catch(err => {
             console.log(err);
+            console.log(err.response.data.error)
             setErrorMsg(`Information of ${newName} has already been removed from server`)
             setTimeout(() => {
               setErrorMsg(null)
